@@ -22,8 +22,16 @@ namespace Framework
         [Test]
         public void TestLoginUserProperData()
         {
+            Assert.Pass();
+        }
 
+        public void TestLoginUserWithNoName()
+        {
+            Assert.Pass();
+        }
 
+        public void TestLoginUserWithNoPassword()
+        {
             Assert.Pass();
         }
     }

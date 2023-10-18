@@ -11,7 +11,7 @@ namespace Framework.page
     public class LoginPage
     {
         readonly IWebDriver driver = DriverSingleton.getDriver();
-        private readonly string pageUrl = "http://www.interia.pl";
+        private readonly string pageUrl = "http://poczta.interia.pl";
 
         public LoginPage openPage()
         {

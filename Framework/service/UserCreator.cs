@@ -14,17 +14,17 @@ namespace Framework.service
 
         public User withCredentials()
         {
-            return new User(userName, this.userPassword);
+            return new User(this.userName, this.userPassword);
         }
 
         public User withEmptyUserName()
         {
-            return new User("", userPassword);
+            return new User("", this.userPassword);
         }
 
         public User withEmptyUserPassword()
         {
-            return new User(userName, "");
+            return new User(this.userName, "");
         }
     }
 }

@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <PackageReference Include="DotNetSeleniumExtras.PageObjects" Version="3.11.0" />
+    <PackageReference Include="DotNetSeleniumExtras.PageObjects.Core" Version="4.3.0" />
     <PackageReference Include="DotNetSeleniumExtras.WaitHelpers" Version="3.11.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.5.0" />
     <PackageReference Include="NUnit" Version="3.13.3" />
@@ -18,6 +19,8 @@
     <PackageReference Include="NUnit.Analyzers" Version="3.6.1" />
     <PackageReference Include="coverlet.collector" Version="3.2.0" />
     <PackageReference Include="OpenQA.Selenium.Winium" Version="1.0.0.4" />
+    <PackageReference Include="Selenium.Community.PageObjects" Version="1.0.0" />
+    <PackageReference Include="Selenium.WebDriver" Version="4.14.1" />
     <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="118.0.5993.7000" />
     <PackageReference Include="SeleniumBrowsers.InvokationCore" Version="1.0.0" />
   </ItemGroup>

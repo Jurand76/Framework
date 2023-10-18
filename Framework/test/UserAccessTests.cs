@@ -27,6 +27,8 @@ namespace Framework
             user = userCreator.withCredentials();
             loginPage.openPage();
             loginPage.rodoPopupClose();
+            Console.WriteLine($"user: {user.getUserName()} password: {user.getUserPassword()}");
+            loginPage.loginUser(user.getUserName(), user.getUserPassword());
             Assert.Pass();
         }
 

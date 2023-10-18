@@ -26,6 +26,7 @@ namespace Framework
         {
             user = userCreator.withCredentials();
             loginPage.openPage();
+            loginPage.rodoPopupClose();
             Assert.Pass();
         }
 

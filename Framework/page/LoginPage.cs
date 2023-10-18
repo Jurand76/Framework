@@ -3,10 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Framework.driver;
+using OpenQA.Selenium;
 
 namespace Framework.page
 {
-    internal class LoginPage
+    public class LoginPage
     {
+        readonly IWebDriver driver = DriverSingleton.getDriver();
+        private readonly string pageUrl = "http://www.interia.pl";
+
+        public LoginPage openPage()
+        {
+            driver.Navigate().GoToUrl(pageUrl);
+            return this;
+        }
     }
 }

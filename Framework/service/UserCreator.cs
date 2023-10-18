@@ -9,8 +9,8 @@ namespace Framework.service
 {
     public class UserCreator
     {
-        private readonly string userName = "tomek";
-        private readonly string userPassword = "tomek1234";
+        private readonly string userName = "seleniumtest1@interia.pl";
+        private readonly string userPassword = "Testowekonto";
 
         public User withCredentials()
         {

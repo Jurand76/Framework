@@ -10,13 +10,15 @@ namespace Framework
     {
         protected IWebDriver driver;
         protected MainPage mainPage;
-        protected User user;
+        protected ComputingInstance user;
         protected SearchCalculator searchCalculator;
+        protected UseCalculator useCalculator;
 
         [SetUp]
         public void Setup()
         {
             searchCalculator = new SearchCalculator();
+            useCalculator = new UseCalculator();
             driver = DriverSingleton.getDriver();
             mainPage = new MainPage();
         }
@@ -36,5 +38,11 @@ namespace Framework
             Assert.IsTrue(searchCalculator.isGoogleCalculatorVisible(), "Google Calculator is not opened");
         }
 
+        [Test, Order(2)]
+        public void TestFillCalculatorFields()
+        {
+            useCalculator = new UseCalculator();
+            useCalculator.FillCalculatorFields();
+        }
     }
 }

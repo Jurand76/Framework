@@ -1,0 +1,26 @@
+Zadanie powinno wykorzystywaæ funkcje Selenium WebDriver, framework testów jednostkowych i koncepcjê Page Object. Zautomatyzuj nastêpuj¹cy scenariusz:
+
+1. otwórz https://cloud.google.com/ 
+2. Kliknij przycisk wyszukiwania portalu u góry strony i wpisz "Google Cloud Platform Pricing Calculator" w polu wyszukiwania. 3.
+3. Uruchom wyszukiwanie, klikaj¹c przycisk wyszukiwania.
+4. Kliknij "Google Cloud Platform Pricing Calculator" w wynikach wyszukiwania i przejdŸ do strony kalkulatora.
+5. Aktywuj sekcjê COMPUTE ENGINE w górnej czêœci strony.
+6. Wype³nij formularz podaj¹c nastêpuj¹ce informacje:
+    * Liczba instancji: 4
+    * Do czego s³u¿¹ te instancje: pozostaw puste
+    * System operacyjny / oprogramowanie: Bezp³atne: Debian, CentOS, CoreOS, Ubuntu lub inny system operacyjny dostarczony przez u¿ytkownika
+    * Klasa maszyny wirtualnej: zwyk³a
+    * Typ instancji: n1-standard-8 (vCPU: 8, RAM: 30 GB)
+    * Wybierz Dodaj GPU
+        * Liczba GPU: 1
+        * Typ GPU: NVIDIA Tesla V100
+    * Lokalny dysk SSD: 2x375 Gb
+    * Lokalizacja centrum danych: Frankfurt (europe-west3)
+    * Zaanga¿owane u¿ycie: 1 rok
+7. Kliknij przycisk Dodaj do oszacowania
+8. Wybierz EMAIL ESTIMATE
+9. W nowej karcie otwórz https://yopmail.com/ lub podobn¹ us³ugê do generowania tymczasowych wiadomoœci e-mail.
+10. Skopiuj adres e-mail wygenerowany w serwisie yopmail.com
+11. Wróæ do kalkulatora, wpisz adres z poprzedniego punktu w polu Email.
+12. Kliknij przycisk WYŒLIJ EMAIL
+13. Poczekaj na wiadomoœæ e-mail z kalkulacj¹ kosztów i sprawdŸ, czy ca³kowity szacowany koszt miesiêczny w wiadomoœci e-mail jest taki sam, jak wyœwietlany w kalkulatorze.

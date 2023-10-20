@@ -26,8 +26,11 @@ namespace Framework.service
         [FindsBy(How = How.Id, Using = "select_126")]
         private IWebElement machineTypeInput;
 
-        [FindsBy(How = How.XPath, Using = "//md-checkbox[@aria-label='Add GPUs']")]
+        [FindsBy(How = How.XPath, Using = "//div[contains(text(), 'Add GPUs')]")]
         private IWebElement addGPUsCheckbox;
+
+        //[FindsBy(How = How.XPath, Using = "//div[containsmd-select-backdrop")]
+        //private IWebElement removeMachineTypeInput;
 
         public UseCalculator()
         {
@@ -47,8 +50,15 @@ namespace Framework.service
             quantityInput.SendKeys(instance.getNumberOfInstances());
             seriesInput.Click();
             seriesInput.SendKeys(instance.getSeries());
+
             machineTypeInput.Click();
-            machineTypeInput.SendKeys(instance.getMachineType());
+            IWebElement chooseMachineTypeInput = wait.Until(ExpectedConditions.ElementIsVisible(By.XPath($"//div[contains(text(), '{instance.getMachineType()}')]")));
+            chooseMachineTypeInput.Click();
+
+            Thread.Sleep(3000);
+            //driver.SwitchTo().DefaultContent();
+            //wait.Until(ExpectedConditions.FrameToBeAvailableAndSwitchToIt(By.XPath("//iframe[contains(@src, 'cloud.google.com/frame/products/calculator')]")));
+            //wait.Until(ExpectedConditions.FrameToBeAvailableAndSwitchToIt(By.TagName("iframe")));
 
             if (instance.getGPUExistence())
             {

@@ -18,7 +18,7 @@ namespace Framework.model
         {
             this.numberOfInstances = 4;
             this.series = "N1";
-            this.machineType = " n1-standard-8 (vCPUs: 8, RAM: 30GB) ";
+            this.machineType = "n1-standard-8";
             this.existsGPU = true;
             this.numberOfGPU = 1;
         }
@@ -35,7 +35,7 @@ namespace Framework.model
 
         public string getMachineType()
         {
-            return this.machineType;
+            return this.machineType.ToLower();
         }
 
         public bool getGPUExistence()

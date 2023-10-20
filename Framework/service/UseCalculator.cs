@@ -29,6 +29,9 @@ namespace Framework.service
         [FindsBy(How = How.XPath, Using = "//div[contains(text(), 'Add GPUs')]")]
         private IWebElement addGPUsCheckbox;
 
+        [FindsBy(How = How.ClassName, Using = "devsite-snackbar-action")]
+        private IWebElement devsiteSnackbarButton;
+
         //[FindsBy(How = How.XPath, Using = "//div[containsmd-select-backdrop")]
         //private IWebElement removeMachineTypeInput;
 
@@ -41,6 +44,7 @@ namespace Framework.service
         public void FillCalculatorFields()
         {
             driver.SwitchTo().DefaultContent();
+            devsiteSnackbarButton.Click();
 
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
             wait.Until(ExpectedConditions.FrameToBeAvailableAndSwitchToIt(By.XPath("//iframe[contains(@src, 'cloud.google.com/frame/products/calculator')]")));

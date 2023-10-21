@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Edge;
 
 namespace Framework.driver
 {
@@ -19,6 +20,7 @@ namespace Framework.driver
         {
             if (null == driver)
             {
+                //driver = new EdgeDriver();
                 driver = new ChromeDriver();
             }
        

@@ -153,7 +153,7 @@ namespace Framework.service
             // datacenter selection
             datacenterSelection.Click();
             IWebElement dataCenter = wait.Until(ExpectedConditions.ElementExists(By.XPath($"//md-option//div[contains(text(), '{instance.getDatacenter()}')]")));
-            Thread.Sleep(1000);
+            Thread.Sleep(1000);       // needed to proper data center selection !!!
             ((IJavaScriptExecutor)driver).ExecuteScript("arguments[0].click();", dataCenter);
                         
         }

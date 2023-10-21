@@ -17,7 +17,7 @@ namespace Framework.service
     {
         readonly IWebDriver driver = DriverSingleton.getDriver();
         readonly ComputingInstance instance;
-
+        
 
         [FindsBy(How = How.Id, Using = "input_99")]
         private IWebElement quantityInput;
@@ -51,7 +51,8 @@ namespace Framework.service
 
         [FindsBy(How = How.CssSelector, Using = ".md-raised.md-primary.cpc-button")]
         private IWebElement addToEstimateButton;
-
+        
+        
         public UseCalculator()
         {
             PageFactory.InitElements(driver, this);
@@ -165,11 +166,25 @@ namespace Framework.service
             // committed usage
             committedUsageSelection.Click();
             IWebElement commitedUsage = wait.Until(ExpectedConditions.ElementExists(By.XPath($"//md-option//div[contains(text(), '{instance.getCommittedUsage()}')]")));
-            Thread.Sleep(1000);       // needed to proper data center selection !!!
+            Thread.Sleep(1000);       // needed to proper data committed usage selection !!!
             ((IJavaScriptExecutor)driver).ExecuteScript("arguments[0].click();", commitedUsage);
 
             // estimate button
             addToEstimateButton.Click();
+        }
+
+        public bool AreEstimatedCostsGenerated()
+        {
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+            try
+            {
+                IWebElement estimatedCosts = wait.Until(ExpectedConditions.ElementExists(By.XPath($"//b[contains(text(), 'Total Estimated Cost:')]")));
+                return true;
+            }
+            catch (WebDriverTimeoutException) 
+            {
+                return false;
+            }
         }
     }
 }

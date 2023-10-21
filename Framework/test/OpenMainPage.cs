@@ -13,6 +13,8 @@ namespace Framework
         protected ComputingInstance user;
         protected SearchCalculator searchCalculator;
         protected UseCalculator useCalculator;
+        protected YopmailPage yopmailPage;
+        protected YopMailPageActions yopmailPageActions;
 
         [SetUp]
         public void Setup()
@@ -21,6 +23,8 @@ namespace Framework
             useCalculator = new UseCalculator();
             driver = DriverSingleton.getDriver();
             mainPage = new MainPage();
+            yopmailPage = new YopmailPage();
+            yopmailPageActions = new YopMailPageActions();
         }
 
         [Test, Order(0)]
@@ -43,6 +47,17 @@ namespace Framework
         {
             useCalculator = new UseCalculator();
             useCalculator.FillCalculatorFields();
+            Assert.IsTrue(useCalculator.AreEstimatedCostsGenerated(), "Estimated costs not generated");
+        }
+
+        [Test, Order(3)]
+        public void TestGenerateMail()
+        {
+            ((IJavaScriptExecutor)driver).ExecuteScript("window.open();");
+            driver.SwitchTo().Window(driver.WindowHandles.Last());
+            yopmailPage.openPage();
+            yopmailPageActions.CloseCookiesPopup();
+            yopmailPageActions.GenerateMail();
         }
     }
 }

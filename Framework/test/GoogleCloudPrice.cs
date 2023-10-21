@@ -6,7 +6,7 @@ using OpenQA.Selenium;
 
 namespace Framework
 {
-    public class OpenMainPage
+    public class GoogleCloudPrice
     {
         protected IWebDriver driver;
         protected MainPage mainPage;
@@ -91,9 +91,9 @@ namespace Framework
         }
 
         [Test, Order(7)]
-        public void CompareAmountsFromEstimationAndMail()
+        public void TestCompareAmountsFromEstimationAndMail()
         {
-            Assert.AreEqual(amountFromEstimation, amountFromEmail);
+            Assert.That(amountFromEmail, Is.EqualTo(amountFromEstimation));
         }
     }
 }

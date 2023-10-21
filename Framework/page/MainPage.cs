@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Framework.driver;
+using Framework.model;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.PageObjects;
@@ -15,10 +16,12 @@ namespace Framework.page
     public class MainPage
     {
         readonly IWebDriver driver = DriverSingleton.getDriver();
-        private readonly string pageUrl = "https://cloud.google.com/";
-
+        readonly ConfigModel configModel = ConfigModel.GetConfiguration();
+        readonly string pageUrl;
+        
         public MainPage()
         {
+            pageUrl = configModel.Url_google_cloud;
             PageFactory.InitElements(driver, this);
         }
 

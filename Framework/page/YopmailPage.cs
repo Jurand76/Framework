@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Framework.driver;
+using Framework.model;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.PageObjects;
@@ -14,10 +15,12 @@ namespace Framework.page
     public class YopmailPage
     {
         readonly IWebDriver driver = DriverSingleton.getDriver();
-        private readonly string pageUrl = "https://yopmail.com/";
+        readonly ConfigModel configModel = ConfigModel.GetConfiguration();
+        readonly string pageUrl;
 
         public YopmailPage()
         {
+            pageUrl = configModel.Url_mail_service;
             PageFactory.InitElements(driver, this);
         }
 

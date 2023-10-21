@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -23,6 +23,13 @@
     <PackageReference Include="Selenium.WebDriver" Version="4.14.1" />
     <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="118.0.5993.7000" />
     <PackageReference Include="SeleniumBrowsers.InvokationCore" Version="1.0.0" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="7.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="configuration\config.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

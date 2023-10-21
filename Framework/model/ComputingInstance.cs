@@ -29,7 +29,7 @@ namespace Framework.model
             this.numberOfGPU = 1;
             this.typeOfGPU = "NVIDIA Tesla V100";
             this.localSSD = "2x375 GB";
-            this.dataCenter = "Frankfurt(europe-west3)";
+            this.dataCenter = "Frankfurt (europe-west3)";
             this.committedUsage = "1 Year";
         }
 
@@ -66,6 +66,11 @@ namespace Framework.model
         public string getLocalSSD()
         {
             return this.localSSD;
+        }
+
+        public string getDatacenter()
+        {
+            return this.dataCenter;
         }
 
 

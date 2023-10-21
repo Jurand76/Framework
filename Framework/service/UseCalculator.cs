@@ -4,7 +4,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Framework.driver;
 using Framework.model;
+using NUnit.Framework.Internal;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.PageObjects;
 using SeleniumExtras.WaitHelpers;
@@ -40,6 +42,9 @@ namespace Framework.service
 
         [FindsBy(How = How.Id, Using = "select_465")]
         private IWebElement localSSDselection;
+
+        [FindsBy(How = How.Id, Using = "select_132")]
+        private IWebElement datacenterSelection;
 
         public UseCalculator()
         {
@@ -79,12 +84,15 @@ namespace Framework.service
             // add GPU
             if (instance.getGPUExistence())
             {
+                // scroll
+                ((IJavaScriptExecutor)driver).ExecuteScript("arguments[0].scrollIntoView();", addGPUsCheckbox);
+                Actions scroll1 = new Actions(driver);
+                scroll1.MoveToElement(addGPUsCheckbox).Click().Perform();
+
                 // choose type of GPU
                 addGPUsCheckbox.Click();
                 clickGPUselection.Click();
                 IWebElement typeOfGPU = driver.FindElement(By.XPath($"//div[contains(text(), '{instance.getTypeOfGPU()}')]"));
-
-                // Find the parent <md-option> element of the <div> to confirm GPU type
                 IWebElement ancestorOfTypeOfGPU = typeOfGPU.FindElement(By.XPath("./ancestor::md-option"));
                 ancestorOfTypeOfGPU.Click();
 
@@ -113,8 +121,14 @@ namespace Framework.service
                 numberOfGPUoption.Click();
             }
 
+
+            
+            // scroll
+            ((IJavaScriptExecutor)driver).ExecuteScript("arguments[0].scrollIntoView();", localSSDselection);
+            Actions scroll2 = new Actions(driver);
+            scroll2.MoveToElement(localSSDselection).Click().Perform();
+
             // add local SDD
-            localSSDselection.Click();
             string[] localSSD = instance.getLocalSSD().Split('x');
             string localSSDselectText = "select_option_";
 
@@ -131,10 +145,17 @@ namespace Framework.service
                 localSSDselectText = localSSDselectText + (Convert.ToInt32(localSSD[0]) + 489).ToString();
             }
 
+            localSSDselection.Click();
             IWebElement typeOfSSDoption = wait.Until(ExpectedConditions.ElementIsVisible(By.Id(localSSDselectText)));
             wait.Until(ExpectedConditions.ElementToBeClickable(typeOfSSDoption));
             typeOfSSDoption.Click();
 
+            // datacenter selection
+            datacenterSelection.Click();
+            IWebElement dataCenter = wait.Until(ExpectedConditions.ElementExists(By.XPath($"//md-option//div[contains(text(), '{instance.getDatacenter()}')]")));
+            Thread.Sleep(1000);
+            ((IJavaScriptExecutor)driver).ExecuteScript("arguments[0].click();", dataCenter);
+                        
         }
     }
 }

@@ -15,6 +15,9 @@ namespace Framework
         protected UseCalculator useCalculator;
         protected YopmailPage yopmailPage;
         protected YopMailPageActions yopmailPageActions;
+        protected string yopmailAddress = "";
+        protected string amountFromEmail = "";
+        protected string amountFromEstimation = "";
 
         [SetUp]
         public void Setup()
@@ -51,13 +54,46 @@ namespace Framework
         }
 
         [Test, Order(3)]
+        public void TestGetTotalCostFromEstimationCard()
+        {
+            amountFromEstimation = useCalculator.GetTotalCostFromEstimation();
+            Console.WriteLine("Cost by est: " + amountFromEstimation);
+            Assert.IsNotEmpty(amountFromEstimation, "Total cost from estimation card hasn't been read");
+        }
+
+        [Test, Order(4)]
         public void TestGenerateMail()
         {
-            ((IJavaScriptExecutor)driver).ExecuteScript("window.open();");
-            driver.SwitchTo().Window(driver.WindowHandles.Last());
+            yopmailPageActions.CreateNewTab();
             yopmailPage.openPage();
             yopmailPageActions.CloseCookiesPopup();
             yopmailPageActions.GenerateMail();
+            yopmailAddress = yopmailPageActions.GetGeneratedMail();
+            yopmailPageActions.SwitchToPreviousTab();
+
+            Assert.IsNotEmpty(yopmailAddress, "Yopmail address not generated");
+        }
+
+        [Test, Order(5)]
+        public void TestSendEmailWithCosts()
+        {
+            Assert.IsTrue(useCalculator.SendEstimatedCostByMail(yopmailAddress), "Error during sending mail");
+        }
+
+        [Test, Order(6)]
+        public void TestReadReceivedEmailAndGetAmount()
+        {
+            Thread.Sleep(3000);    // wait 3 seconds for mail
+            yopmailPageActions.SwitchToNextTab();
+            amountFromEmail = yopmailPageActions.CheckEmailBoxAndReceiveAmount();
+            Console.WriteLine("Cost from mail: " + amountFromEmail);
+            Assert.IsNotEmpty(amountFromEmail, "Total cost from email hasn't been read");
+        }
+
+        [Test, Order(7)]
+        public void CompareAmountsFromEstimationAndMail()
+        {
+            Assert.AreEqual(amountFromEstimation, amountFromEmail);
         }
     }
 }

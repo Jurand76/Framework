@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Framework.driver;
 using Framework.model;
@@ -17,6 +18,7 @@ namespace Framework.service
     {
         readonly IWebDriver driver = DriverSingleton.getDriver();
         readonly ComputingInstance instance;
+        private WebDriverWait wait;
         
 
         [FindsBy(How = How.Id, Using = "input_99")]
@@ -51,12 +53,29 @@ namespace Framework.service
 
         [FindsBy(How = How.CssSelector, Using = ".md-raised.md-primary.cpc-button")]
         private IWebElement addToEstimateButton;
-        
-        
+
+        [FindsBy(How = How.Id, Using = "Email Estimate")]
+        private IWebElement sendEmailPopupButton;
+
+        [FindsBy(How = How.Id, Using = "input_616")]
+        private IWebElement fieldForEmailAddress;
+
+        [FindsBy(How = How.XPath, Using = "//button[contains(text(), 'Send Email')]")]
+        private IWebElement sendEmailButton;
+     
+
         public UseCalculator()
         {
             PageFactory.InitElements(driver, this);
             instance = new ComputingInstance();
+            wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+        }
+
+        public void SwitchToSecondIframe()
+        {
+            driver.SwitchTo().DefaultContent();
+            wait.Until(ExpectedConditions.FrameToBeAvailableAndSwitchToIt(By.XPath("//iframe[contains(@src, 'cloud.google.com/frame/products/calculator')]")));
+            wait.Until(ExpectedConditions.FrameToBeAvailableAndSwitchToIt(By.TagName("iframe")));
         }
 
         public void FillCalculatorFields()
@@ -70,9 +89,7 @@ namespace Framework.service
             }
 
             // switch to second iframe
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
-            wait.Until(ExpectedConditions.FrameToBeAvailableAndSwitchToIt(By.XPath("//iframe[contains(@src, 'cloud.google.com/frame/products/calculator')]")));
-            wait.Until(ExpectedConditions.FrameToBeAvailableAndSwitchToIt(By.TagName("iframe")));
+            SwitchToSecondIframe();
             
             // enter quantity
             quantityInput.Click();
@@ -128,8 +145,7 @@ namespace Framework.service
                 numberOfGPUoption.Click();
             }
 
-
-            
+                        
             // scroll
             ((IJavaScriptExecutor)driver).ExecuteScript("arguments[0].scrollIntoView();", localSSDselection);
             Actions scroll2 = new Actions(driver);
@@ -175,10 +191,50 @@ namespace Framework.service
 
         public bool AreEstimatedCostsGenerated()
         {
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
             try
             {
-                IWebElement estimatedCosts = wait.Until(ExpectedConditions.ElementExists(By.XPath($"//b[contains(text(), 'Total Estimated Cost:')]")));
+                wait.Until(ExpectedConditions.ElementExists(By.XPath($"//b[contains(text(), 'Total Estimated Cost:')]")));
+                return true;
+            }
+            catch (WebDriverTimeoutException) 
+            {
+                return false;
+            }
+        }
+
+        public string GetTotalCostFromEstimation()
+        {
+            string priceText = "";
+
+            try
+            {
+                IWebElement priceElement = driver.FindElement(By.XPath("//div[@class='cpc-cart-total']//b[contains(text(), 'USD')]"));
+                
+                Match match = Regex.Match(priceElement.Text, @"USD\s([\d,]+\.\d{2})");
+                if (match.Success)
+                {
+                    priceText = "USD " + match.Groups[1].Value; 
+                }
+            }
+            catch (NoSuchElementException)
+            {
+                Console.WriteLine("Price at estimation card not found!");
+            }
+
+            return priceText;
+        }
+
+        public bool SendEstimatedCostByMail(string email)
+        {
+            SwitchToSecondIframe();
+            wait.Until(ExpectedConditions.ElementToBeClickable(sendEmailPopupButton));
+            sendEmailPopupButton.Click();
+            try
+            {
+                wait.Until(ExpectedConditions.ElementToBeClickable(fieldForEmailAddress));
+                fieldForEmailAddress.Click();
+                fieldForEmailAddress.SendKeys(email);
+                sendEmailButton.Click();
                 return true;
             }
             catch (WebDriverTimeoutException) 

@@ -73,7 +73,10 @@ namespace Framework.model
             return this.dataCenter;
         }
 
-
+        public string getCommittedUsage()
+        {
+            return this.committedUsage;
+        }
     }
 }
 

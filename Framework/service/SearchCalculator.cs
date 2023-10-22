@@ -38,6 +38,7 @@ namespace Framework.service
 
         public void startSearching()
         {
+            var config = NLog.LogManager.Configuration;
             logger.Info("Entering search string and starting search");
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
             wait.Until(ExpectedConditions.ElementToBeClickable(searchButton)).Click();

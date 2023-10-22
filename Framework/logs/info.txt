@@ -1,1 +1,1 @@
-﻿
+﻿Here will be logs from NLog.

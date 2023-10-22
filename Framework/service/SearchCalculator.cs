@@ -9,11 +9,13 @@ using SeleniumExtras.PageObjects;
 using SeleniumExtras.WaitHelpers;
 using Framework.model;
 using Framework.page;
+using NLog;
 
 namespace Framework.service
 {
     public class SearchCalculator
     {
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
         private readonly string searchText = "Google Cloud Platform Pricing Calculator";
         readonly IWebDriver driver = DriverSingleton.getDriver();
        
@@ -36,6 +38,7 @@ namespace Framework.service
 
         public void startSearching()
         {
+            logger.Info("Entering search string and starting search");
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
             wait.Until(ExpectedConditions.ElementToBeClickable(searchButton)).Click();
             searchInput.SendKeys(searchText + Keys.Enter);
@@ -43,19 +46,22 @@ namespace Framework.service
 
         public bool isResultVisible()
         {
+            logger.Info("Waiting for results of searching");
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
             try
             {
                 wait.Until(ExpectedConditions.ElementToBeClickable(findMoreOnGoogleLink));
                 return googleCloudPricingCalculatorLink.Displayed;
             }
-            catch (NoSuchElementException)
+            catch (NoSuchElementException ex)
             {
+                logger.Error(ex, "No expected results of search");
                 return false;
             }
         }
         public void enterSearchLink()
         {
+            logger.Info("Entering link for Google Calculator");
             googleCloudPricingCalculatorLink.Click();
         }
 
@@ -70,6 +76,7 @@ namespace Framework.service
             }
             catch (WebDriverTimeoutException ex)
             {
+                logger.Error(ex, "No possibility to switch to iframe");
                 Console.WriteLine("Timeout while waiting for iframe: " + ex.Message);
                 return false;
             }

@@ -4,6 +4,7 @@ using Framework.page;
 using Framework.service;
 using Framework.utils;
 using OpenQA.Selenium;
+using NLog;
 
 namespace Framework
 {

@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using System.Text.Json;
 using System.IO;
 using System.Text.Json.Serialization;
+using NLog;
+using System.Xml.Linq;
 
 namespace Framework.model
 {
@@ -19,6 +21,9 @@ namespace Framework.model
 
         [JsonPropertyName("url_mail_service")]
         public string Url_mail_service { get; set; }
+
+        [JsonPropertyName("log_file_path")]
+        public string Log_file_path { get; set; }
 
         [JsonPropertyName("timeout")]
         public int Timeout { get; set; }
@@ -74,6 +79,19 @@ namespace Framework.model
 
                 string configContent = File.ReadAllText(configPath);
                 _config = JsonSerializer.Deserialize<ConfigModel>(configContent);
+
+                var configNlog = LogManager.Configuration;
+
+                if (configNlog != null)
+                {
+                    var fileTarget = (NLog.Targets.FileTarget)configNlog.FindTargetByName("logfile");
+                    if (fileTarget != null)
+                    {
+                        fileTarget.FileName = _config.Log_file_path;  // Change filename for logging
+                    }
+
+                    LogManager.Configuration = configNlog;  // Reapply the updated configuration
+                }
             }
             catch (Exception ex)
             {

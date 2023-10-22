@@ -20,6 +20,7 @@ namespace Framework
         protected string yopmailAddress = "";
         protected string amountFromEmail = "";
         protected string amountFromEstimation = "";
+        protected Logger logger = LogManager.GetCurrentClassLogger();
 
         [SetUp]
         public void Setup()
@@ -37,12 +38,14 @@ namespace Framework
         {
             try
             {
+                logger.Info("Trying to open Search Service");
                 mainPage.openPage();
                 searchCalculator.startSearching();
                 Assert.IsTrue(searchCalculator.isResultVisible(), "Search results not visible");
             }
             catch (Exception ex)
             {
+                logger.Error("Search Service not opened. Error: " + ex);
                 Utilities.TakeScreenshot(driver, "SearchService");
                 throw;
             }
@@ -53,11 +56,13 @@ namespace Framework
         {
             try
             {
+                logger.Info("Trying to open Google Cloud Calculator");
                 searchCalculator.enterSearchLink();
                 Assert.IsTrue(searchCalculator.isGoogleCalculatorVisible(), "Google Calculator is not opened");
             }
             catch (Exception ex)
             {
+                logger.Error("Google Cloud Calculator not opened. Error: " + ex);
                 Utilities.TakeScreenshot(driver, "OpenCalculator");
                 throw;
             }
@@ -68,12 +73,14 @@ namespace Framework
         {
             try
             {
+                logger.Info("Trying to fill calculator fields");
                 useCalculator = new UseCalculator();
                 useCalculator.FillCalculatorFields();
                 Assert.IsTrue(useCalculator.AreEstimatedCostsGenerated(), "Estimated costs not generated");
             }
             catch (Exception ex)
             {
+                logger.Error("Google calculator fields not filled. Error: " + ex);
                 Utilities.TakeScreenshot(driver, "FillCalculatorFields");
                 throw;
             }
@@ -84,12 +91,14 @@ namespace Framework
         {
             try
             {
+                logger.Info("Trying to get estimation costs from calculator");
                 amountFromEstimation = useCalculator.GetTotalCostFromEstimation();
                 Console.WriteLine("Cost by est: " + amountFromEstimation);
                 Assert.IsNotEmpty(amountFromEstimation, "Total cost from estimation card hasn't been read");
             }
             catch (Exception ex)
             {
+                logger.Error("Estimation costs not found. Error: " + ex);
                 Utilities.TakeScreenshot(driver, "GetTotalCostFromEstimationCard");
                 throw;
             }
@@ -100,6 +109,7 @@ namespace Framework
         {
             try
             {
+                logger.Info("Trying to generate mail with estimation costs");
                 yopmailPageActions.CreateNewTab();
                 yopmailPage.openPage();
                 yopmailPageActions.CloseCookiesPopup();
@@ -110,6 +120,7 @@ namespace Framework
             }
             catch (Exception ex)
             {
+                logger.Error("Mail hasn't been generated. Error: " + ex);
                 Utilities.TakeScreenshot(driver, "GenerateMail");
                 throw;
             }
@@ -121,10 +132,12 @@ namespace Framework
         {
             try
             {
+                logger.Info("Trying to send mail with estimation costs.");
                 Assert.IsTrue(useCalculator.SendEstimatedCostByMail(yopmailAddress), "Error during sending mail");
             }
             catch (Exception ex)
             {
+                logger.Error("Mail hasn't been sent. Error: " + ex);
                 Utilities.TakeScreenshot(driver, "SendEmailWithCosts");
                 throw;
             }
@@ -135,6 +148,7 @@ namespace Framework
         {
             try
             {
+                logger.Info("Trying to read received mail with estimation costs.");
                 Thread.Sleep(3000);    // wait 3 seconds for mail
                 yopmailPageActions.SwitchToNextTab();
                 amountFromEmail = yopmailPageActions.CheckEmailBoxAndReceiveAmount();
@@ -143,6 +157,7 @@ namespace Framework
             }
             catch (Exception ex)
             {
+                logger.Error("Cannot read received mail.");
                 Utilities.TakeScreenshot(driver, "ReadReceivedEmailAndGetAmount");
                 throw;
             }
@@ -153,10 +168,12 @@ namespace Framework
         {
             try
             {
+                logger.Info("Comparing costs from calculator and mail.");
                 Assert.That(amountFromEmail, Is.EqualTo(amountFromEstimation));
             }
             catch
             {
+                logger.Error("Cannot compare costs from calculator and mail");
                 Utilities.TakeScreenshot(driver, "CompareAmountFromEstimationAndMail");
                 throw;
             }

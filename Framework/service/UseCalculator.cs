@@ -5,12 +5,12 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Framework.driver;
 using Framework.model;
-using NUnit.Framework.Internal;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.PageObjects;
 using SeleniumExtras.WaitHelpers;
+using NLog;
 
 namespace Framework.service
 {
@@ -18,8 +18,9 @@ namespace Framework.service
     {
         readonly IWebDriver driver = DriverSingleton.getDriver();
         readonly ComputingInstance instance;
-        private WebDriverWait wait;
-        
+        private readonly WebDriverWait wait;
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
+
 
         [FindsBy(How = How.Id, Using = "input_99")]
         private IWebElement quantityInput;
@@ -83,6 +84,7 @@ namespace Framework.service
             driver.SwitchTo().DefaultContent();
 
             // close pop-up window from bottom of site
+            logger.Info("Closing popup window at calculator page");
             if (devsiteSnackbarButton.Displayed)
             {
                 devsiteSnackbarButton.Click();
@@ -90,17 +92,20 @@ namespace Framework.service
 
             // switch to second iframe
             SwitchToSecondIframe();
-            
+
             // enter quantity
+            logger.Info("Entering quantity: " + instance.getNumberOfInstances());
             quantityInput.Click();
             quantityInput.Clear();
             quantityInput.SendKeys(instance.getNumberOfInstances());
-            
+
             // enter series type
+            logger.Info("Entering series: " + instance.getSeries());
             seriesInput.Click();
             seriesInput.SendKeys(instance.getSeries());
 
             // choose machine type
+            logger.Info("Entering machine type: " + instance.getMachineType());
             machineTypeInput.Click();
             IWebElement chooseMachineTypeInput = wait.Until(ExpectedConditions.ElementIsVisible(By.XPath($"//div[contains(text(), '{instance.getMachineType()}')]")));
             chooseMachineTypeInput.Click();
@@ -109,11 +114,13 @@ namespace Framework.service
             if (instance.getGPUExistence())
             {
                 // scroll
+                logger.Info("Entering GPU");
                 ((IJavaScriptExecutor)driver).ExecuteScript("arguments[0].scrollIntoView();", addGPUsCheckbox);
                 Actions scroll1 = new Actions(driver);
                 scroll1.MoveToElement(addGPUsCheckbox).Click().Perform();
 
                 // choose type of GPU
+                logger.Info("Choosing type of GPU: " + instance.getTypeOfGPU());
                 addGPUsCheckbox.Click();
                 clickGPUselection.Click();
                 IWebElement typeOfGPU = driver.FindElement(By.XPath($"//div[contains(text(), '{instance.getTypeOfGPU()}')]"));
@@ -122,8 +129,9 @@ namespace Framework.service
 
                 // select number of GPU
                 numberOfGPUselection.Click();
-                
+
                 // find the option with the number of GPU and click it
+                logger.Info("Choosing number of GPU: " + instance.getNumberOfGPU());
                 int number = instance.getNumberOfGPU();
                 string select_option_text = "select_option_515";
                 
@@ -152,6 +160,7 @@ namespace Framework.service
             scroll2.MoveToElement(localSSDselection).Click().Perform();
 
             // add local SDD
+            logger.Info("Adding local SSD: " + instance.getLocalSSD());
             string[] localSSD = instance.getLocalSSD().Split('x');
             string localSSDselectText = "select_option_";
 
@@ -174,18 +183,21 @@ namespace Framework.service
             typeOfSSDoption.Click();
 
             // datacenter selection
+            logger.Info("Adding datacenter: " + instance.getDatacenter());
             datacenterSelection.Click();
             IWebElement dataCenter = wait.Until(ExpectedConditions.ElementExists(By.XPath($"//md-option//div[contains(text(), '{instance.getDatacenter()}')]")));
             Thread.Sleep(1000);       // needed to proper data center selection !!!
             ((IJavaScriptExecutor)driver).ExecuteScript("arguments[0].click();", dataCenter);
 
             // committed usage
+            logger.Info("Adding committed usage: " + instance.getCommittedUsage());
             committedUsageSelection.Click();
             IWebElement commitedUsage = wait.Until(ExpectedConditions.ElementExists(By.XPath($"//md-option//div[contains(text(), '{instance.getCommittedUsage()}')]")));
             Thread.Sleep(1000);       // needed to proper data committed usage selection !!!
             ((IJavaScriptExecutor)driver).ExecuteScript("arguments[0].click();", commitedUsage);
 
             // estimate button
+            logger.Info("Calculating estimation costs");
             addToEstimateButton.Click();
         }
 
@@ -213,12 +225,13 @@ namespace Framework.service
                 Match match = Regex.Match(priceElement.Text, @"USD\s([\d,]+\.\d{2})");
                 if (match.Success)
                 {
-                    priceText = "USD " + match.Groups[1].Value; 
+                    priceText = "USD " + match.Groups[1].Value;
+                    logger.Info("Estimation costs from google calculator: " + priceText);
                 }
             }
-            catch (NoSuchElementException)
+            catch (NoSuchElementException ex)
             {
-                Console.WriteLine("Price at estimation card not found!");
+                logger.Error("Estimation costs not found. Error: " + ex);
             }
 
             return priceText;
@@ -227,6 +240,7 @@ namespace Framework.service
         public bool SendEstimatedCostByMail(string email)
         {
             SwitchToSecondIframe();
+            logger.Info("Sending email with estimation costs");
             wait.Until(ExpectedConditions.ElementToBeClickable(sendEmailPopupButton));
             sendEmailPopupButton.Click();
             try
@@ -237,8 +251,9 @@ namespace Framework.service
                 sendEmailButton.Click();
                 return true;
             }
-            catch (WebDriverTimeoutException) 
+            catch (WebDriverTimeoutException ex) 
             {
+                logger.Error("Mail hasn't been sent. Error: " + ex);
                 return false;
             }
         }

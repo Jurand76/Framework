@@ -38,7 +38,6 @@ namespace Framework.service
 
         public void startSearching()
         {
-            var config = NLog.LogManager.Configuration;
             logger.Info("Entering search string and starting search");
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
             wait.Until(ExpectedConditions.ElementToBeClickable(searchButton)).Click();
@@ -62,12 +61,13 @@ namespace Framework.service
         }
         public void enterSearchLink()
         {
-            logger.Info("Entering link for Google Calculator");
+            logger.Info("Entering link for Google Cloud Calculator");
             googleCloudPricingCalculatorLink.Click();
         }
 
         public bool isGoogleCalculatorVisible()
         {
+            logger.Info("Waiting for visibility of Google Cloud Calculator");
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
             try
             {

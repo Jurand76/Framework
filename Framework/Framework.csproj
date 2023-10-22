@@ -42,7 +42,6 @@
 
   <ItemGroup>
     <Folder Include="screenshots\" />
-    <Folder Include="logs\" />
   </ItemGroup>
 
 </Project>

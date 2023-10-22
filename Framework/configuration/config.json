@@ -2,6 +2,7 @@
   "browser": "Chrome",
   "url_google_cloud": "https://cloud.google.com/",
   "url_mail_service": "https://yopmail.com",
+  "log_file_path": "D:\\tomek\\epam\\test automation\\selenium\\TestFramework\\Framework\\Framework\\logs\\framework.log",
   "timeout": 20,
   "screenshots_directory": "D:\\tomek\\epam\\test automation\\selenium\\TestFramework\\Framework\\Framework\\screenshots\\",
   "number_of_instances": 4,

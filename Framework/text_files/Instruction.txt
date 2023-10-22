@@ -1,0 +1,3 @@
+﻿In directory "configuration" you can find file CONFIG.JSON.
+In this file you can configure parameters for environment (Chrome or Edge for different browsers).
+You can also configure parameters of computing instance in Google Cloud.

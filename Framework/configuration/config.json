@@ -2,7 +2,8 @@
   "browser": "Chrome",
   "url_google_cloud": "https://cloud.google.com/",
   "url_mail_service": "https://yopmail.com",
-  "timeout": 20
+  "timeout": 20,
+  "screenshots_directory": "D:\\tomek\\epam\\test automation\\selenium\\TestFramework\\Framework\\Framework\\screenshots\\"
 }
 
 

@@ -23,6 +23,9 @@ namespace Framework.model
         [JsonPropertyName("timeout")]
         public int Timeout { get; set; }
 
+        [JsonPropertyName("screenshots_directory")]
+        public string Screenshots_directory { get; set; }
+
         private static ConfigModel _config;
 
         static ConfigModel()

@@ -3,7 +3,16 @@
   "url_google_cloud": "https://cloud.google.com/",
   "url_mail_service": "https://yopmail.com",
   "timeout": 20,
-  "screenshots_directory": "D:\\tomek\\epam\\test automation\\selenium\\TestFramework\\Framework\\Framework\\screenshots\\"
+  "screenshots_directory": "D:\\tomek\\epam\\test automation\\selenium\\TestFramework\\Framework\\Framework\\screenshots\\",
+  "number_of_instances": 4,
+  "series": "N1",
+  "machine_type": "n1-standard-8",
+  "exists_GPU": true,
+  "number_of_GPU": 1,
+  "type_of_GPU": "NVIDIA Tesla V100",
+  "local_SSD": "2x375 GB",
+  "datacenter": "Frankfurt (europe-west3)",
+  "committed_usage": "1 Year"
 }
 
 

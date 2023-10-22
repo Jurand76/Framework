@@ -18,19 +18,19 @@ namespace Framework.model
         private readonly string localSSD;
         private readonly string dataCenter;
         private readonly string committedUsage;
+        readonly ConfigModel configModel = ConfigModel.GetConfiguration();
 
-    
         public ComputingInstance()
         {
-            this.numberOfInstances = 4;
-            this.series = "N1";
-            this.machineType = "n1-standard-8";
-            this.existsGPU = true;
-            this.numberOfGPU = 1;
-            this.typeOfGPU = "NVIDIA Tesla V100";
-            this.localSSD = "2x375 GB";
-            this.dataCenter = "Frankfurt (europe-west3)";
-            this.committedUsage = "1 Year";
+            this.numberOfInstances = configModel.Number_of_instances;
+            this.series = configModel.Series;
+            this.machineType = configModel.Machine_type;
+            this.existsGPU = configModel.Exists_GPU;
+            this.numberOfGPU = configModel.Number_of_GPU;
+            this.typeOfGPU = configModel.Type_of_GPU;
+            this.localSSD = configModel.Local_SSD;
+            this.dataCenter = configModel.Datacenter;
+            this.committedUsage = configModel.Committed_usage;
         }
 
         public string getNumberOfInstances()

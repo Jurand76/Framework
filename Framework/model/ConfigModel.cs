@@ -26,6 +26,34 @@ namespace Framework.model
         [JsonPropertyName("screenshots_directory")]
         public string Screenshots_directory { get; set; }
 
+        [JsonPropertyName("number_of_instances")]
+        public int Number_of_instances { get; set; }
+
+        [JsonPropertyName("series")]
+        public string Series { get; set; }
+
+        [JsonPropertyName("machine_type")]
+        public string Machine_type { get; set; }
+
+        [JsonPropertyName("exists_GPU")]
+        public bool Exists_GPU { get; set; }
+
+        [JsonPropertyName("number_of_GPU")]
+        public int Number_of_GPU { get; set; }
+
+        [JsonPropertyName("type_of_GPU")]
+        public string Type_of_GPU { get; set; }
+
+        [JsonPropertyName("local_SSD")]
+        public string Local_SSD { get; set; }
+
+        [JsonPropertyName("datacenter")]
+        public string Datacenter { get; set; }
+
+        [JsonPropertyName("committed_usage")]
+        public string Committed_usage{ get; set; }
+
+
         private static ConfigModel _config;
 
         static ConfigModel()
@@ -46,12 +74,6 @@ namespace Framework.model
 
                 string configContent = File.ReadAllText(configPath);
                 _config = JsonSerializer.Deserialize<ConfigModel>(configContent);
-
-                // Print loaded values to the console for verification
-                Console.WriteLine($"Loaded Config Values:");
-                Console.WriteLine($"Browser: {_config.Browser}");
-                Console.WriteLine($"Url: {_config.Url_google_cloud}");
-                Console.WriteLine($"Timeout: {_config.Timeout}");
             }
             catch (Exception ex)
             {

@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<NUnitProject>
+	<Settings activeconfig="Debug" processModel="Default" domainUsage="Default" />
+	<Config name="Debug" binpathtype="Auto">
+		<assembly path="Framework.dll">
+			<TestFilter>
+				<Class>
+					<Name>SmokeTests</Name>
+				</Class>
+			</TestFilter>
+		</assembly>
+	</Config>
+</NUnitProject>
